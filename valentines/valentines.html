@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Zuri, Will You Be My Valentine? 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 35px;
+      border-radius: 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      max-width: 360px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    #countdown {
+      font-weight: bold;
+      color: #ff4d6d;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 14px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      box-shadow: 0 10px 20px rgba(255,77,109,0.4);
+    }
+
+    #yes:hover {
+      transform: scale(1.15);
+    }
+
+    #no {
+      background: #eee;
+      color: #999;
+      position: absolute;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sweet background music -->
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="card" id="card">
+    <img src="zuri.jpg" alt="Zuri">
+    <h1>Zuri 💖</h1>
+    <p>From Javaur…<br><strong>Will you be my Valentine?</strong></p>
+    <div id="countdown"></div>
+    <button id="yes">Yes 😍</button>
+    <button id="no">No 🙃</button>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const card = document.getElementById("card");
+    const countdownEl = document.getElementById("countdown");
+
+    // Valentine countdown (Feb 14)
+    const valentinesDay = new Date(new Date().getFullYear(), 1, 14, 0, 0, 0);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = valentinesDay - now;
+
+      if (diff <= 0) {
+        countdownEl.textContent = "It’s Valentine’s Day 💘";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+
+      countdownEl.textContent =
+        `${days} days ${hours} hrs ${minutes} mins until Valentine’s 💕`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Impossible NO button
+    noBtn.addEventListener("mouseover", moveNo);
+    noBtn.addEventListener("click", moveNo);
+
+    function moveNo() {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    yesBtn.addEventListener("click", () => {
+      card.innerHTML = `
+        <h1>She said YES!! 🎉💖</h1>
+        <p>Zuri, you just made me the happiest man alive 😍</p>
+        <p>Happy Valentine’s Day ❤️</p>
+      `;
+      launchConfetti();
+    });
+
+    function launchConfetti() {
+      for (let i = 0; i < 220; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.backgroundColor =
+          ["#ff4d6d", "#ffd166", "#06d6a0", "#4cc9f0", "#c77dff"]
+          [Math.floor(Math.random() * 5)];
+        confetti.style.animationDuration = Math.random() * 2 + 2 + "s";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+  </script>
+
+</body>
+</html>
